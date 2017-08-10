@@ -1,0 +1,7 @@
+[0mCompiling "resources/public/js/game.js" from ["src" "env/dev"]...[0m
+[31mFailed to compile "resources/public/js/game.js" in 0.181 seconds.[0m
+[36m----  Could not Analyze  target/figwheel_temp/app/figwheel/connect/build_app.cljs  ----[0m
+
+  [1mNo such namespace: game.dev, could not locate game/dev.cljs, game/dev.cljc, or JavaScript source providing "game.dev" [0m
+
+[36m----  Analysis Error : Please see target/figwheel_temp/app/figwheel/connect/build_app.cljs  ----[0m
