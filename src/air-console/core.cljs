@@ -1,4 +1,5 @@
-(ns air-console.core)
+(ns air-console.core
+  (:require [cljs.reader :refer [read-string]]))
 
 (defonce AC (js/AirConsole.))
 
@@ -12,7 +13,9 @@
   (set! (.-onDisconnect AC) connect-fn))
 
 (defn on-message! [msg-fn]
-  (set! (.-onMessage AC) msg-fn))
+  (set! (.-onMessage AC) (fn [id data]
+                           (.log js/console "message" data)
+                           (msg-fn id (read-string data))) ))
 
 ;; Commands
 ;; ========
@@ -21,7 +24,7 @@
   (.setActivePlayers AC players))
 
 (defn message [data]
-  (.message AC (.-SCREEN js/AirConsole) data))
+  (.message AC (.-SCREEN js/AirConsole) (pr-str data)))
 
 ;; Utils
 ;; =====

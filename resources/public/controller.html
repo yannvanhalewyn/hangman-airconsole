@@ -41,34 +41,14 @@
   </head>
   <body>
     <div style="height: 1%"></div>
-    <div class="button" onclick="up(1)">
+    <div class="button" onclick="controller.core.up()">
       <div class="button_label">UP</div>
     </div>
     <div style="height: 8%"></div>
-    <div class="button">
+    <div class="button" onClick="controller.core.down()">
       <div class="button_label">DOWN</div>
     </div>
     <div id="player_id">It's a 2 player game</div>
     <script type="text/javascript" src="/js/controller.js"></script>
-
-    <script type="text/javascript">
-      navigator.vibrate = (navigator.vibrate ||
-        navigator.webkitVibrate ||
-        navigator.mozVibrate ||
-        navigator.msVibrate);
-      var airconsole = new AirConsole({"orientation": "portrait"});
-
-      airconsole.onActivePlayersChange = function(player) {
-        alert("onActivePlayersChange", player);
-      };
-
-      airconsole.onMessage = function(from, data) {
-        alert("onMessage", from, data);
-      };
-
-function up(a) {
-  console.log("up!")
-}
-    </script>
   </body>
 </html>

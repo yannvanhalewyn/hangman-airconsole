@@ -1,6 +1,7 @@
 (defproject airconsole-game "0.1.0-SNAPSHOT"
   :dependencies [[org.clojure/clojure "1.8.0"]
-                 [org.clojure/clojurescript "1.9.854"]]
+                 [org.clojure/clojurescript "1.9.854"]
+                 [rm-hull/monet "0.3.0"]]
 
   :plugins [[lein-cljsbuild "1.1.5"]]
 

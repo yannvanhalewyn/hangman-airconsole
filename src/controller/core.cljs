@@ -1,3 +1,8 @@
-(ns controller.core)
+(ns controller.core
+  (:require [air-console.core :as ac]))
 
-(.log js/console "Controller")
+(defn ^:export up []
+  (ac/message [:move/up 40]))
+
+(defn ^:export down []
+  (ac/message [:move/down 40]))
