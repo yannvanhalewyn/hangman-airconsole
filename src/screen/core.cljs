@@ -1,3 +1,3 @@
-(ns game.core)
+(ns screen.core)
 
 (.log js/console "Game")

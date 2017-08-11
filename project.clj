@@ -6,20 +6,31 @@
 
   :min-lein-version "2.5.0"
 
-  :clean-targets ^{:protect false} ["resources/public/js/compiled/"]
+  :clean-targets ^{:protect false} ["target" "resources/public/js/"]
 
   :source-paths ["src"]
   :resource-paths ["resources"]
 
-  :cljsbuild {:builds {:app {:source-paths ["src" "env/dev"]
-                             :figwheel {:on-jsload "user/on-js-load"}
-                             :compiler {:main game.core
-                                        :asset-path "/js/compiled/game-out"
-                                        :output-to "resources/public/js/game.js"
-                                        :output-dir "resources/public/js/compiled/game-out"
-                                        :source-map true
-                                        :optimizations :none
-                                        :pretty-print  true}}}}
+  :cljsbuild {:builds [{:id "screen"
+                        :source-paths ["src" "env/dev"]
+                        :figwheel {:on-jsload "screen.core/on-js-load"}
+                        :compiler {:main screen.core
+                                   :asset-path "/js/compiled/screen-out"
+                                   :output-to "resources/public/js/screen.js"
+                                   :output-dir "resources/public/js/compiled/screen-out"
+                                   :source-map true
+                                   :optimizations :none
+                                   :pretty-print  true}}
+                       {:id "controller"
+                        :source-paths ["src" "env/dev"]
+                        :figwheel {:on-jsload "controller.core/on-js-load"}
+                        :compiler {:main controller.core
+                                   :asset-path "/js/compiled/controller-out"
+                                   :output-to "resources/public/js/controller.js"
+                                   :output-dir "resources/public/js/compiled/controller-out"
+                                   :source-map true
+                                   :optimizations :none
+                                   :pretty-print  true}} ]}
 
 
   :figwheel {:http-server-root "public"
