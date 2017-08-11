@@ -1,3 +1,3 @@
 (ns user)
 
-(.log js/console "Dev.user")
+(.log js/console "User NS")

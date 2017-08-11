@@ -1,22 +1,21 @@
 (defproject airconsole-game "0.1.0-SNAPSHOT"
   :dependencies [[org.clojure/clojure "1.8.0"]
-                 [org.clojure/clojurescript "1.9.854"
-                  :scope "provided"]]
+                 [org.clojure/clojurescript "1.9.854"]]
 
   :plugins [[lein-cljsbuild "1.1.5"]]
 
   :min-lein-version "2.5.0"
 
-  :clean-targets ["resources/public/js/compiled/game-out"]
+  :clean-targets ^{:protect false} ["resources/public/js/compiled/"]
 
   :source-paths ["src"]
   :resource-paths ["resources"]
 
   :cljsbuild {:builds {:app {:source-paths ["src" "env/dev"]
-                             :figwheel {:on-jsload "game.dev/on-js-load"}
-                             :compiler {:main "ui-components.dev"
+                             :figwheel {:on-jsload "user/on-js-load"}
+                             :compiler {:main game.core
                                         :asset-path "/js/compiled/game-out"
-                                        :output-to "resources/public/js/compiled/game.js"
+                                        :output-to "resources/public/js/game.js"
                                         :output-dir "resources/public/js/compiled/game-out"
                                         :source-map true
                                         :optimizations :none
