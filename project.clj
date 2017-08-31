@@ -1,7 +1,8 @@
 (defproject airconsole-game "0.1.0-SNAPSHOT"
   :dependencies [[org.clojure/clojure "1.8.0"]
                  [org.clojure/clojurescript "1.9.854"]
-                 [rm-hull/monet "0.3.0"]]
+                 [reagent "0.7.0"]
+                 [re-frame "0.10.1"]]
 
   :plugins [[lein-cljsbuild "1.1.5"]]
 
@@ -14,24 +15,29 @@
 
   :cljsbuild {:builds [{:id "screen"
                         :source-paths ["src" "env/dev"]
-                        :figwheel {:on-jsload "screen.core/on-js-load"}
-                        :compiler {:main screen.core
+                        :figwheel {:on-jsload "dev.screen/on-js-load"}
+                        :compiler {:main dev.screen
                                    :asset-path "/js/compiled/screen-out"
                                    :output-to "resources/public/js/screen.js"
                                    :output-dir "resources/public/js/compiled/screen-out"
                                    :source-map true
                                    :optimizations :none
-                                   :pretty-print  true}}
+                                   :pretty-print  true
+                                   :preloads [devtools.preload]
+                                   :external-config {:devtools/config {:features-to-install :all}}
+                                   }}
                        {:id "controller"
                         :source-paths ["src" "env/dev"]
-                        :figwheel {:on-jsload "controller.core/on-js-load"}
-                        :compiler {:main controller.core
+                        :figwheel {:on-jsload "dev.controller/on-js-load"}
+                        :compiler {:main dev.controller
                                    :asset-path "/js/compiled/controller-out"
                                    :output-to "resources/public/js/controller.js"
                                    :output-dir "resources/public/js/compiled/controller-out"
                                    :source-map true
                                    :optimizations :none
-                                   :pretty-print  true}} ]}
+                                   :pretty-print  true
+                                   :preloads [devtools.preload]
+                                   :external-config {:devtools/config {:features-to-install :all}}}}]}
 
 
   :figwheel {:http-server-root "public"

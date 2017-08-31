@@ -1,8 +1,15 @@
 (ns controller.core
-  (:require [air-console.core :as ac]))
+  (:require [re-frame.core :as re-frame]
+            [reagent.core :as reagent]))
 
-(defn ^:export up []
-  (ac/message [:move/up 40]))
+(re-frame/reg-event-db
+ :initialize-db
+ (fn [] {}))
 
-(defn ^:export down []
-  (ac/message [:move/down 40]))
+(defn mount-root []
+  (re-frame/clear-subscription-cache!)
+  (reagent/render [:div "hi"] (.getElementById js/document "controller")))
+
+(defn init! []
+  (re-frame/dispatch-sync [:initialize-db])
+  (mount-root))

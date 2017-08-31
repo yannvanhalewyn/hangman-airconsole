@@ -1,54 +1,10 @@
 <html>
   <head>
     <script type="text/javascript" src="https://www.airconsole.com/api/airconsole-1.7.0.js"></script>
-    <style type="text/css">
-@font-face {
-  font-family: 'PressStart2P';
-  src: url('PressStart2P.ttf') format('truetype');
-  text-align: center;
-}
-    html, body {
-      height: 100%;
-      margin: 0px;
-      font-family: 'PressStart2P', sans-serif;
-      color: white;
-      text-align: center;
-      background-color: black;
-    }
-    .button {
-      display: inline-block;
-      height: 45%;
-      width: 98%;
-      background-color: #222;
-      position: relative;
-    }
-    .button_label {
-      position: absolute;
-      left: 0px;
-      width: 100%;
-      top: 50%;
-      margin-top: -6px;
-    }
-    #player_id {
-      position: absolute;
-      top: 50%;
-      left: 0%;
-      width: 100%;
-      margin-top: -8px;
-      color: #777;
-    }
-    </style>
+    <link rel="stylesheet" href="/css/main.css" type="text/css" media="screen" />
   </head>
   <body>
-    <div style="height: 1%"></div>
-    <div class="button" onclick="controller.core.up()">
-      <div class="button_label">UP</div>
-    </div>
-    <div style="height: 8%"></div>
-    <div class="button" onClick="controller.core.down()">
-      <div class="button_label">DOWN</div>
-    </div>
-    <div id="player_id">It's a 2 player game</div>
+    <div id="controller">Loading..</div>
     <script type="text/javascript" src="/js/controller.js"></script>
   </body>
 </html>

@@ -1,0 +1,67 @@
+body {
+    font-family: monospace;
+    background: #efefef;
+    font-size: 18px;
+}
+
+.u-centered {
+    text-align: center;
+}
+
+.u-margin-right {
+    margin-right: 5px;
+}
+
+.u-margin-right-l {
+    margin-right: 10px;
+}
+
+.u-margin-top {
+    margin-top: 10px;
+}
+
+.u-large {
+    font-size: 1.5em;
+}
+
+.u-extra-large {
+    font-size: 3em;
+}
+
+.u-bold {
+    font-weight: bold;
+}
+
+.success {
+    color: #0a8;
+}
+
+.failure {
+    color: #E55;
+}
+
+.u-strikethrough {
+    text-decoration: line-through;
+}
+
+.btn {
+    display: inline-block;
+    color: #009EDD;
+    background: none;
+    border: none;
+    font: inherit;
+    font-weight: 600;
+    text-decoration: underline;
+    outline: none;
+    cursor: pointer;
+}
+
+.btn:hover, .btn:active {
+    color: #008eff;
+}
+
+
+.hangman {
+    border: 3px solid black;
+    padding: 10px;
+}
