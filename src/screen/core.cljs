@@ -18,12 +18,12 @@
 ;; ==========
 
 (defn on-connect [device-id]
-  (.log js/console "Connect")
+  (re-frame/dispatch [:player-joined device-id])
   (ac/set-active-players 2))
 
 (defn on-disconnect [device-id]
-  (.log js/console "Disconnect")
-  (ac/set-active-players 0))
+  (re-frame/dispatch [:player-left device-id])
+  (ac/set-active-players 2))
 
 (defn on-message [device-id event]
   (re-frame/dispatch event))
