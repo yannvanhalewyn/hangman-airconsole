@@ -1,15 +1,14 @@
 (ns screen.core
   (:require [re-frame.core :as re-frame]
             [reagent.core :as reagent]
-            [air-console.core :as ac]))
-
-(re-frame/reg-event-db
- :initialize-db
- (fn [] {}))
+            [air-console.core :as ac]
+            [screen.subs]
+            [screen.events]
+            [screen.views :as views]))
 
 (defn mount-root []
   (re-frame/clear-subscription-cache!)
-  (reagent/render [:div "hi"] (.getElementById js/document "screen")))
+  (reagent/render [views/game] (.getElementById js/document "screen")))
 
 (defn init! []
   (re-frame/dispatch-sync [:initialize-db])
@@ -19,6 +18,7 @@
 ;; ==========
 
 (defn on-connect [device-id]
+  (.log js/console "Connect")
   (ac/set-active-players 2))
 
 (defn on-disconnect [device-id]
