@@ -3,6 +3,8 @@
 
 (defonce AC (js/AirConsole.))
 
+(def SCREEN (.-SCREEN js/AirConsole))
+
 ;; Handler Setters
 ;; ===============
 
@@ -13,9 +15,9 @@
   (set! (.-onDisconnect AC) connect-fn))
 
 (defn on-message! [msg-fn]
-  (set! (.-onMessage AC) (fn [id data]
-                           (.log js/console "message" data)
-                           (msg-fn id (read-string data))) ))
+  (set! (.-onMessage AC)
+        (fn [device-id data]
+          (msg-fn device-id (read-string data)))))
 
 ;; Commands
 ;; ========
@@ -23,8 +25,8 @@
 (defn set-active-players [players]
   (.setActivePlayers AC players))
 
-(defn message [data]
-  (.message AC (.-SCREEN js/AirConsole) (pr-str data)))
+(defn message [device-id data]
+  (.message AC device-id (pr-str data)))
 
 ;; Utils
 ;; =====

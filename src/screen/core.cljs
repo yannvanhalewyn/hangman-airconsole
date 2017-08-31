@@ -22,13 +22,13 @@
   (ac/set-active-players 2))
 
 (defn on-disconnect [device-id]
+  (.log js/console "Disconnect")
   (ac/set-active-players 0))
 
 (defn on-message [device-id event]
   (re-frame/dispatch event))
 
-(defonce foo
-  (do
-    (ac/on-connect! on-connect)
-    (ac/on-disconnect! on-disconnect)
-    (ac/on-message! on-message)))
+(do
+  (ac/on-connect! on-connect)
+  (ac/on-disconnect! on-disconnect)
+  (ac/on-message! on-message))
