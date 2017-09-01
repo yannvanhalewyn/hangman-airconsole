@@ -19,6 +19,11 @@
         (fn [device-id data]
           (msg-fn device-id (read-string data)))))
 
+;; Getters
+;; =======
+
+(defn device-id [] (.getDeviceId AC))
+
 ;; Commands
 ;; ========
 
@@ -27,6 +32,9 @@
 
 (defn message [device-id data]
   (.message AC device-id (pr-str data)))
+
+(defn broadcast [data]
+  (.broadcast AC (pr-str data)))
 
 ;; Utils
 ;; =====

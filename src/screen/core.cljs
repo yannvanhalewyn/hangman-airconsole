@@ -6,29 +6,27 @@
             [screen.events]
             [screen.views :as views]))
 
+;; Networking
+;; ==========
+
+(defn on-connect [device-id]
+  (ac/set-active-players 4)
+  (re-frame/dispatch [:player-joined device-id (ac/device->player device-id)]))
+
+(defn on-disconnect [device-id]
+  (re-frame/dispatch [:player-left device-id]))
+
+(defn on-message [device-id event]
+  (.log js/console "Screen got " device-id event)
+  (re-frame/dispatch event))
+
 (defn mount-root []
   (re-frame/clear-subscription-cache!)
   (reagent/render [views/game] (.getElementById js/document "screen")))
 
 (defn init! []
   (re-frame/dispatch-sync [:initialize-db])
-  (mount-root))
-
-;; Networking
-;; ==========
-
-(defn on-connect [device-id]
-  (re-frame/dispatch [:player-joined device-id])
-  (ac/set-active-players 2))
-
-(defn on-disconnect [device-id]
-  (re-frame/dispatch [:player-left device-id])
-  (ac/set-active-players 2))
-
-(defn on-message [device-id event]
-  (re-frame/dispatch event))
-
-(do
   (ac/on-connect! on-connect)
   (ac/on-disconnect! on-disconnect)
-  (ac/on-message! on-message))
+  (ac/on-message! on-message)
+  (mount-root))

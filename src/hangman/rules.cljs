@@ -22,11 +22,11 @@
 
 (defn game-state
   "Given a game and some guesses, returns the state in which the game
-  is. The state can be one of `#{:playing :lost :won}`"
+  is. The state can be one of `#{:guessing :lost :won}`"
   [{:keys [word guesses] :as game}]
   (let [correct-count (count (correct-guesses game))
         failed-count (count (failed-guesses game))]
     (cond
       (>= failed-count ALLOWED-MISSES) :lost
       (every? guesses (set (str/lower-case word))) :won
-      :else :playing)))
+      :else :guessing)))

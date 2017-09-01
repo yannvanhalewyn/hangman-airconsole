@@ -35,7 +35,7 @@
          (fn [i char]
            ^{:key i}
            [:span.u-margin-right
-            (if (or (@guesses (str/lower-case char)) (not= :playing @game-state))
+            (if (or (@guesses (str/lower-case char)) (not= :guessing @game-state))
               char
               "_")])
          @word))])))
@@ -52,7 +52,7 @@
             [:span.failure.u-margin-right.u-strikethrough char])
           @failures)]))))
 
-(defn game []
+(defn guessing []
   [:div
    [:h1.u-centered.u-extra-large "HANGMAN"]
    [status]
@@ -60,3 +60,11 @@
    [hangman/component]
    [target-word]
    [failed-guesses]])
+
+(defn game []
+  (let [game-state (subscribe [:game-state])]
+    (fn []
+      (case @game-state
+        :word-selection [:h1 "Waiting for word"]
+        :guessing guessing
+        [:h1 "No such game-state " @game-state]))))

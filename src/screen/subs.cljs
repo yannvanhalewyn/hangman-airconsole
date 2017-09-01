@@ -6,4 +6,4 @@
 (reg-sub :word :word)
 (reg-sub :score :score)
 (reg-sub :failed-guesses rules/failed-guesses)
-(reg-sub :game-state rules/game-state)
+(reg-sub :game-state :game-state)
