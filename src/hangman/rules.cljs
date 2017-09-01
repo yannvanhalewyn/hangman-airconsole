@@ -3,10 +3,7 @@
 
 (def ALLOWED-MISSES 8)
 
-(defn gen-new-game!
-  "Returns a new game db for given word"
-  [word]
-  {:guesses #{} :word word})
+(def INIT-GAME {:guesses #{} :word nil})
 
 (defn correct-guesses
   "Given a word and a set of guesses, returns the set of guesses that

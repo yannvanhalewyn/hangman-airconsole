@@ -10,7 +10,6 @@
                     :leader? false})
 
 (re-frame/reg-fx :message #(ac/message ac/SCREEN %))
-
 (re-frame/reg-cofx :device-id #(assoc % :device-id (ac/device-id)))
 
 ;; Subs
@@ -51,14 +50,19 @@
                   :value ""
                   :on-change #(re-frame/dispatch [:submit-guess (.. % -target -value)])}]]))))
 
+(defn round-end []
+  [:div
+   [:h1 "Game done!"]
+   [:button.btn {:on-click #(re-frame/dispatch [:request-new-game])} "New game"]])
+
+(re-frame/reg-sub :trigger :trigger)
 (defn app []
   (let [state (re-frame/subscribe [:game-state])]
-    (fn []
-      (case @state
-        :word-select word-select
-        :guessing guessing
-        :end [:h1 "Game done!"]
-        [:h1.u-extra-large "No such state " @state]))))
+    (case @(re-frame/subscribe [:game-state])
+      :word-select [word-select]
+      :guessing [guessing]
+      :round-end [round-end]
+      [:h1.u-extra-large "No such state " @(re-frame/subscribe [:game-state])])))
 
 ;; Handlers
 ;; ========
@@ -85,10 +89,15 @@
    {:db {:game-state :word-select
          :leader? (= device-id leader-id)}}))
 
+(re-frame/reg-event-fx
+ :request-new-game
+ (fn [_ _]
+   {:message [:request-new-game]}))
+
 (re-frame/reg-event-db
- :word-submitted
- (fn [db]
-   (assoc db :game-state :guessing)))
+ :game-state
+ (fn [db [_ new-state]]
+   (assoc db :game-state new-state)))
 
 (re-frame/reg-event-db
  :round-end

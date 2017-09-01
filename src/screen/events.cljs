@@ -11,18 +11,20 @@
 ;; Handlers
 ;; ========
 
-(def NEW_GAME {:game-state :word-selection})
+(def NEW_GAME {:game-state :word-select})
 
 (defn- init
   "Given a random-word and local-storage data, returns an initial db
   to work with."
   [_]
-  (merge NEW_GAME (rules/gen-new-game! "")))
+  (merge NEW_GAME rules/INIT-GAME))
 
 (defn- new-game
   "Given an old db and a random word, sets up a db for a new game"
-  [db]
-  (merge db (rules/gen-new-game! "Elephant")))
+  [{:keys [db]} _]
+  {:db (-> (merge db rules/INIT-GAME)
+           (assoc :game-state :word-select))
+   :broadcast [:game-state :word-select]})
 
 (defn- guess
   "Given a db and a guess, consult the rules and progress the
@@ -33,8 +35,8 @@
                        (update $ :guesses conj guess)
                        (assoc $ :game-state (rules/game-state $)))]
           (case [(:game-state db) (:game-state new-db)]
-            [:guessing :won] [(update-in new-db [:score :wins] inc) [:round-end]]
-            [:guessing :lost] [(update-in new-db [:score :losses] inc) [:round-end]]
+            [:guessing :won] [(update-in new-db [:score :wins] inc) [:game-state :round-end]]
+            [:guessing :lost] [(update-in new-db [:score :losses] inc) [:game-state :round-end]]
             [:guessing :guessing] [new-db]
             [db]))]
     (-> {:db new-db} (conj (when broadcast [:broadcast broadcast])))))
@@ -66,13 +68,13 @@
   "Sets the target word of the game"
   [{:keys [db]} [_ word]]
   {:db (assoc db :word word :game-state :guessing)
-   :broadcast [:word-submitted word]})
+   :broadcast [:game-state :guessing]})
 
 ;; Register handlers
 ;; =================
 
 (rf/reg-event-db :initialize-db init)
-(rf/reg-event-db :new-game new-game)
+(rf/reg-event-fx :request-new-game new-game)
 (rf/reg-event-fx :guess guess)
 (rf/reg-event-fx :player-joined add-player)
 (rf/reg-event-fx :player-left remove-player)
