@@ -1,11 +1,24 @@
-body {
-    font-family: monospace;
-    background: #efefef;
-    font-size: 18px;
+*, *:before, *:after {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
 }
+
+body {
+    font-family: RepriseTitleStd;
+    background: #FAFAFA;
+    font-size: 25px;
+}
+
+/* UTILITIES
+   ========= */
 
 .u-centered {
     text-align: center;
+}
+
+.u-margin-left {
+    margin-right: 10px;
 }
 
 .u-margin-right {
@@ -20,17 +33,64 @@ body {
     margin-top: 10px;
 }
 
+.u-margin-top-l {
+    margin-top: 20px;
+}
+
 .u-large {
     font-size: 1.5em;
 }
 
 .u-extra-large {
-    font-size: 3em;
+    font-size: 2.5em;
 }
 
 .u-bold {
     font-weight: bold;
 }
+
+.u-clearfix {
+    clear: both;
+}
+
+.u-left {
+    float: left;
+}
+
+/* LAYOUT
+   ====== */
+
+.l-content {
+    position: relative;
+    max-width: 1500px;
+    margin: 0 auto;
+    padding: 0 25px;
+}
+
+.l-row {
+    margin: 0 -10px;
+}
+
+.l-row::after {
+    content: '';
+    display: block;
+    clear: both;
+}
+
+.l-col-6 {
+    float: left;
+    width: 50%;
+    padding: 0 10px;
+}
+
+.l-col-3 {
+    float: left;
+    width: 25%;
+    padding: 0 10px;
+}
+
+/* COLORS
+   ====== */
 
 .success {
     color: #0a8;
@@ -40,9 +100,16 @@ body {
     color: #E55;
 }
 
+.u-muted {
+    color: #3C3A47;
+}
+
 .u-strikethrough {
     text-decoration: line-through;
 }
+
+/* MODULES
+   ======= */
 
 .btn {
     display: inline-block;
@@ -60,8 +127,6 @@ body {
     color: #008eff;
 }
 
-
-.hangman {
-    border: 3px solid black;
-    padding: 10px;
+.player__thumb {
+    width: 170px;
 }

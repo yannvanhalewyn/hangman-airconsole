@@ -1,9 +1,6 @@
 (ns hangman.views.hangman
   (:require [re-frame.core :refer [subscribe]]))
 
-(def WIDTH 200)
-(def HEIGHT (* WIDTH (/ 46 39)))
-
 (def pillar
   [:g#Base
    [:g
@@ -105,11 +102,8 @@
 
 (def HANGMAN [pillar noose body left-arm right-arm left-leg right-leg head])
 
-(defn component []
-  (let [failures (subscribe [:failed-guesses])]
-    (fn []
-      [:div.u-centered.u-margin-top
-       (into
-        [:svg.hangman
-         {:view-box "0 0 78 92" :height (str HEIGHT "px") :width (str WIDTH "px")}]
-        (take (count @failures) HANGMAN))])))
+(defn component [{:keys [size step]}]
+  (into
+   [:svg
+    {:view-box "0 0 78 92" :height (str (* size (/ 46 39)) "px") :width (str size "px")}]
+   (take step HANGMAN)))
