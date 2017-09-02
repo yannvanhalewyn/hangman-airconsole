@@ -7,3 +7,4 @@
 (reg-sub :score :score)
 (reg-sub :failed-guesses rules/failed-guesses)
 (reg-sub :game-state :game-state)
+(reg-sub :players #(-> % :players/by-device-id vals))

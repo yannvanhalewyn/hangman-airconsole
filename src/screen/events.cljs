@@ -36,8 +36,18 @@
                        (update $ :guesses conj guess)
                        (assoc $ :game-state (rules/game-state $)))]
           (case [(:game-state db) (:game-state new-db)]
-            [:guessing :won] [(update-in new-db [:score :wins] inc) [:game-state :round-end]]
-            [:guessing :lost] [(update-in new-db [:score :losses] inc) [:game-state :round-end]]
+
+            ;; Word was guessed
+            [:guessing :won]
+            [(update-in new-db (conj (:current-player new-db) :score) inc)
+             [:game-state :round-end]]
+
+            ;; Failed to guess word
+            [:guessing :lost]
+            [(update-in new-db (conj (:leader new-db) :score) inc)
+             [:game-state :round-end]]
+
+            ;; Game not over yet
             [:guessing :guessing] [new-db]
             [db]))]
     (-> {:db new-db} (conj (when broadcast [:broadcast broadcast])))))
@@ -47,7 +57,8 @@
   [{:keys [db]} [_ device-id player-id]]
   {:db (assoc-in db [:players/by-device-id device-id]
                  {:device-id device-id
-                  :player-id player-id})
+                  :player-id player-id
+                  :score 0})
    :dispatch [:ensure-leader]})
 
 (defn- remove-player
@@ -65,10 +76,17 @@
     {:db (assoc db :leader new-leader)
      :broadcast [:new-leader (second new-leader)]}))
 
+(defn- first-available-player-id [db]
+  (let [leader-id (second (:leader db))]
+    (-> db :players/by-device-id (dissoc leader-id) first key)))
+
 (defn- submit-word
   "Sets the target word of the game"
   [{:keys [db]} [_ word]]
-  {:db (assoc db :word word :game-state :guessing)
+  {:db (assoc db
+         :word word
+         :game-state :guessing
+         :current-player [:players/by-device-id (first-available-player-id db)])
    :broadcast [:game-state :guessing]})
 
 ;; Register handlers
