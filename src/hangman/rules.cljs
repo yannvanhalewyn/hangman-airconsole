@@ -3,8 +3,6 @@
 
 (def ALLOWED-MISSES 8)
 
-(def INIT-GAME {:guesses #{} :word nil})
-
 (defn correct-guesses
   "Given a word and a set of guesses, returns the set of guesses that
   match a letter in the target word."

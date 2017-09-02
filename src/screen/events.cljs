@@ -11,19 +11,20 @@
 ;; Handlers
 ;; ========
 
-(def NEW_GAME {:game-state :word-select})
+(def NEW_GAME {:game-state :word-select
+               :guesses #{}
+               :word nil})
 
 (defn- init
   "Given a random-word and local-storage data, returns an initial db
   to work with."
   [_]
-  (merge NEW_GAME rules/INIT-GAME))
+  NEW_GAME)
 
 (defn- new-game
   "Given an old db and a random word, sets up a db for a new game"
   [{:keys [db]} _]
-  {:db (-> (merge db rules/INIT-GAME)
-           (assoc :game-state :word-select))
+  {:db (merge db NEW_GAME)
    :broadcast [:game-state :word-select]})
 
 (defn- guess

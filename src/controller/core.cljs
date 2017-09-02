@@ -55,22 +55,20 @@
    [:h1 "Game done!"]
    [:button.btn {:on-click #(re-frame/dispatch [:request-new-game])} "New game"]])
 
-(re-frame/reg-sub :trigger :trigger)
 (defn app []
-  (let [state (re-frame/subscribe [:game-state])]
-    (case @(re-frame/subscribe [:game-state])
+  (let [state @(re-frame/subscribe [:game-state])]
+    (case state
       :word-select [word-select]
       :guessing [guessing]
       :round-end [round-end]
-      [:h1.u-extra-large "No such state " @(re-frame/subscribe [:game-state])])))
+      [:h1.u-extra-large "No such state " state])))
 
 ;; Handlers
 ;; ========
 
 (re-frame/reg-event-db
  :initialize-db
- (fn [db [_ device-id]]
-   (assoc INITIAL_STATE :device-id device-id)))
+ (fn [db] INITIAL_STATE))
 
 (re-frame/reg-event-fx
  :submit-guess
@@ -116,6 +114,6 @@
     (.getElementById js/document "controller")))
 
 (defn init! []
-  (re-frame/dispatch-sync [:initialize-db (ac/device-id)])
+  (re-frame/dispatch-sync [:initialize-db])
   (ac/on-message! on-message)
   (mount-root))
