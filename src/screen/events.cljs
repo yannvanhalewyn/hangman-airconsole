@@ -54,11 +54,8 @@
 
 (defn- add-player
   "Adds a player to the game"
-  [{:keys [db]} [_ device-id player-id]]
-  {:db (assoc-in db [:players/by-device-id device-id]
-                 {:device-id device-id
-                  :player-id player-id
-                  :score 0})
+  [{:keys [db]} [_ player]]
+  {:db (assoc-in db [:players/by-device-id (:device-id player)] player)
    :dispatch [:ensure-leader]})
 
 (defn- remove-player

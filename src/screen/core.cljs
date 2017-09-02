@@ -11,7 +11,11 @@
 
 (defn on-connect [device-id]
   (ac/set-active-players 4)
-  (re-frame/dispatch [:player-joined device-id (ac/device->player device-id)]))
+  (re-frame/dispatch
+   [:player-joined {:device-id device-id
+                    :player-id (ac/device->player device-id)
+                    :name (ac/device->nickname device-id)
+                    :thumb (ac/device->profile-picture device-id)}]))
 
 (defn on-disconnect [device-id]
   (re-frame/dispatch [:player-left device-id]))

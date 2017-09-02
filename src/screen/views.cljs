@@ -57,19 +57,18 @@
 (defn players []
   (let [players @(subscribe [:players])]
     [:div
-     (for [{:keys [player-id device-id score]} players]
+     (for [{:keys [thumb name device-id score]} players]
        ^{:key device-id}
        [:div
-        [:span.u-bold.u-margin-right "Player: " (inc player-id)]
-        [:span.u-bold.u-margin-right "Device: " device-id]
-        [:span.u-bold.u-margin-right "Score: " score]])]))
+        [:img.u-margin-right {:src thumb}]
+        [:span.u-bold.u-margin-right name ": " (or score 0)]])]))
 
 (defn game []
   [:div
    [players]
-   (let [game-state (subscribe [:game-state])]
-     (case @game-state
+   (let [game-state @(subscribe [:game-state])]
+     (case game-state
        :word-select [:h1 "Waiting for word"]
        :guessing [guessing]
-       :won [guessing]
-       [:h1 "No such game-state " @game-state]))])
+       (:won :lost) [guessing]
+       [:h1 "No such game-state " game-state]))])

@@ -42,5 +42,11 @@
 (defn device->player [device-id]
   (.convertDeviceIdToPlayerNumber AC device-id))
 
+(defn device->nickname [device-id]
+  (.getNickname AC device-id))
+
+(defn device->profile-picture [device-id]
+  (.getProfilePicture AC device-id))
+
 (defn player->device [device-id]
   (.convertPlayerNumberToDeviceId AC device-id))
