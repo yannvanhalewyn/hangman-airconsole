@@ -60,7 +60,7 @@
     (case state
       :word-select [word-select]
       :guessing [guessing]
-      :round-end [round-end]
+      (:won :lost) [round-end]
       [:h1.u-extra-large "No such state " state])))
 
 ;; Handlers
@@ -92,10 +92,13 @@
  (fn [_ _]
    {:message [:request-new-game]}))
 
-(re-frame/reg-event-db
- :game-state
- (fn [db [_ new-state]]
-   (assoc db :game-state new-state)))
+(re-frame/reg-event-fx
+ :sync
+ (re-frame/inject-cofx :device-id)
+ (fn [{:keys [db device-id]} [_ new-db]]
+   {:db
+    (-> (merge db new-db)
+        (assoc :leader? (= (second (:leader new-db)) device-id)))}))
 
 (re-frame/reg-event-db
  :round-end

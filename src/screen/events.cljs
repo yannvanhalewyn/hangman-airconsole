@@ -1,7 +1,8 @@
 (ns screen.events
   (:require [re-frame.core :as rf]
             [hangman.rules :as rules]
-            [air-console.core :as ac]))
+            [air-console.core :as ac]
+            [screen.game :as game]))
 
 ;; Coeffects
 ;; =========
@@ -24,33 +25,17 @@
 (defn- new-game
   "Given an old db and a random word, sets up a db for a new game"
   [{:keys [db]} _]
-  {:db (merge db NEW_GAME)
-   :broadcast [:game-state :word-select]})
+  (let [new-db (game/switch-leader (merge db NEW_GAME))]
+    {:db new-db
+     :broadcast [:sync new-db]}))
 
 (defn- guess
   "Given a db and a guess, consult the rules and progress the
   gameplay. Returns a new app-db."
   [{:keys [db]} [_ guess]]
-  (let [[new-db broadcast]
-        (let [new-db (as-> db $
-                       (update $ :guesses conj guess)
-                       (assoc $ :game-state (rules/game-state $)))]
-          (case [(:game-state db) (:game-state new-db)]
-
-            ;; Word was guessed
-            [:guessing :won]
-            [(update-in new-db (conj (:current-player new-db) :score) inc)
-             [:game-state :round-end]]
-
-            ;; Failed to guess word
-            [:guessing :lost]
-            [(update-in new-db (conj (:leader new-db) :score) inc)
-             [:game-state :round-end]]
-
-            ;; Game not over yet
-            [:guessing :guessing] [new-db]
-            [db]))]
-    (-> {:db new-db} (conj (when broadcast [:broadcast broadcast])))))
+  (let [new-db (game/guess db guess)]
+    {:db new-db
+     :broadcast [:sync new-db]}))
 
 (defn- add-player
   "Adds a player to the game"
@@ -73,18 +58,15 @@
     {:db (assoc db :leader new-leader)
      :broadcast [:new-leader (second new-leader)]}))
 
-(defn- first-available-player-id [db]
-  (let [leader-id (second (:leader db))]
-    (-> db :players/by-device-id (dissoc leader-id) first key)))
-
 (defn- submit-word
   "Sets the target word of the game"
   [{:keys [db]} [_ word]]
-  {:db (assoc db
-         :word word
-         :game-state :guessing
-         :current-player [:players/by-device-id (first-available-player-id db)])
-   :broadcast [:game-state :guessing]})
+  (let [new-db (assoc db
+                 :word word
+                 :game-state :guessing
+                 :current-player [:players/by-device-id (game/first-available-player-id db)])]
+    {:db new-db
+     :broadcast [:sync new-db]}))
 
 ;; Register handlers
 ;; =================
