@@ -29,6 +29,7 @@
   (reagent/render [views/game] (.getElementById js/document "screen")))
 
 (defn init! []
+  (ac/init!)
   (re-frame/dispatch-sync [:initialize-db])
   (ac/on-connect! on-connect)
   (ac/on-disconnect! on-disconnect)

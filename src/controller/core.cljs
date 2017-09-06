@@ -117,6 +117,7 @@
     (.getElementById js/document "controller")))
 
 (defn init! []
+  (ac/init! {:orientation ac/ORIENTATION_LANDSCAPE})
   (re-frame/dispatch-sync [:initialize-db])
   (ac/on-message! on-message)
   (mount-root))
