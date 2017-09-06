@@ -1,7 +1,8 @@
 (ns controller.core
   (:require [re-frame.core :as re-frame]
             [reagent.core :as reagent]
-            [air-console.core :as ac]))
+            [air-console.core :as ac]
+            [controller.views :as views]))
 
 ;; Effects
 ;; =======
@@ -17,51 +18,9 @@
 
 (re-frame/reg-sub :game-state :game-state)
 (re-frame/reg-sub :leader? :leader?)
+(re-frame/reg-sub :word :word)
+(re-frame/reg-sub :guesses :guesses)
 
-;; Views
-;; =====
-
-(defn word-input []
-  (let [word (reagent/atom "")]
-    (fn []
-      [:div
-       [:h1.u-centered.u-extra-large "Select Word"]
-       [:form
-        {:on-submit (fn [e]
-                      (.preventDefault e)
-                      (re-frame/dispatch [:submit-word @word]))}
-        [:input {:type :text
-                 :value @word
-                 :on-change #(reset! word (.. % -target -value))}]]])))
-
-(defn word-select []
-  (let [leader? (re-frame/subscribe [:leader?])]
-    (fn []
-      (if @leader? word-input [:h1 "Waiting"]))))
-
-(defn guessing []
-  (let [leader? (re-frame/subscribe [:leader?])]
-    (fn []
-      (if @leader?
-        [:h1 "Waiting"]
-        [:div
-         [:h1.u-centered.u-extra-large "Guess!"]
-         [:input {:type :text
-                  :value ""
-                  :on-change #(re-frame/dispatch [:submit-guess (.. % -target -value)])}]]))))
-
-(defn round-end []
-  [:div
-   [:h1 "Game done!"]
-   [:button.btn {:on-click #(re-frame/dispatch [:request-new-game])} "New game"]])
-
-(defn app []
-  (let [state @(re-frame/subscribe [:game-state])]
-    (case state
-      :word-select [word-select]
-      :guessing [guessing]
-      (:won :lost) [round-end]
-      [:h1.u-extra-large "No such state " state])))
 
 ;; Handlers
 ;; ========
@@ -113,7 +72,7 @@
 
 (defn mount-root []
   (re-frame/clear-subscription-cache!)
-  (reagent/render [app]
+  (reagent/render [views/app]
     (.getElementById js/document "controller")))
 
 (defn init! []

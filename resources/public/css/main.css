@@ -57,6 +57,15 @@ body {
     float: left;
 }
 
+.u-flex {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.u-flex-center {
+    justify-content: space-around;
+}
+
 /* LAYOUT
    ====== */
 
@@ -129,4 +138,32 @@ body {
 
 .player__thumb {
     width: 170px;
+}
+
+.guess-key {
+    background: none;
+    border: 1px solid #eee;
+    box-shadow: 3px 3px 5px #aaa;
+    border-radius: 10px;
+    width: 13%;
+}
+
+.guess-key:active,
+.guess-key:focus {
+    outline: none;
+}
+
+.guess-key--red {
+    background: #F55;
+    box-shadow: 3px 3px 5px #E44;
+    border: none;
+    color: F77;
+    text-decoration: line-through;
+}
+
+.guess-key--green {
+    background: #0A8;
+    box-shadow: 3px 3px 5px #1B9;
+    border: none;
+    color: #3DA;
 }
